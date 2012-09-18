@@ -7,24 +7,25 @@ var SelectAvatarController = (function () {
       this.onSelection = onSelection;
       var controller = this;
       
-      this.xoffset = (this.world.width - (avatars.length * 120)) / 2;
+      this.xoffset = (this.world.width - (avatars.length * 88)) / 2;
 
       avatars.forEach(function (a, i) {
          controller.entities.push(new Game.Sprite({ 
             image: a,
-            x: controller.xoffset + i * 120, 
+            x: controller.xoffset + i * 88, 
             y: 100, 
-            width: 100,
-            height: 150
+            width: 68,
+            height: 75
          }));
       });
       
-      this.selector = new Game.Rectangle({ width: 100, height: 20, x: 0, y: 250, color: 'blue' });
+      this.selector = new Game.Rectangle({ width: 68, height: 20, x: 0, y: 200, color: 'blue' });
 
       this.entities.push(this.selector);
       this.entities.push(new Game.Label({ x: 200, y: 50, text: 'Select an avatar!', color: 'black', font: 'bold 50px sans-serif' }));
       this.avatars = avatars;
       this.selection = 0;
+      this.timeToNextSelection = 0;
    }
 
    SelectAvatarController.prototype.update = function (time) {
@@ -41,19 +42,27 @@ var SelectAvatarController = (function () {
          return;
       }
 
+      this.timeToNextSelection -= time.elapsed;
+
+      if (this.timeToNextSelection > 0) {
+         return;  
+      }
+   
       if (Game.Keyboard.isPressed('right')) {
          this.selection += 1
       } else if (Game.Keyboard.isPressed('left')) {
          this.selection -= 1;
       }
+      
+      this.timeToNextSelection = 100;
 
       if (this.selection < 0) {
          this.selection = this.avatars.length - 1;
-      } else if(this.selection == this.avatars.length) {
+      } else if (this.selection == this.avatars.length) {
          this.selection = 0;
       }
 
-      this.selector.x = this.xoffset + (this.selection ) * 120;
+      this.selector.x = this.xoffset + this.selection * 88;
    };
 
    return SelectAvatarController;

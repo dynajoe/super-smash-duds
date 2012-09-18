@@ -1,9 +1,10 @@
 var GameMaster = function () {
    this.players = {};
    this.world = { width: 900, height: 600 };
+   this.playerHeight = 75;
 }
 
-var avatars = ['dk.gif', 'princess.png'];
+var avatars = ['red.png', 'green.png', 'black.png', 'purple.png'];
 
 GameMaster.prototype.playerEntered = function (socket) {
    socket.emit('select-avatar', avatars);
@@ -50,13 +51,13 @@ GameMaster.prototype.update = function (time) {
          p.x = 0;
       }
 
-      if (p.y > this.world.height - 150) {
-         p.y = this.world.height - 150;
+      if (p.y > this.world.height - this.playerHeight) {
+         p.y = this.world.height - this.playerHeight;
          p.acceleration = 0;
          p.speed.y = 0;
       }
 
-      if (p.y < this.world.height - 150) {
+      if (p.y < this.world.height - this.playerHeight) {
          p.acceleration = .005;
       }
    }

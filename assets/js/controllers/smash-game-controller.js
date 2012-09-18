@@ -5,7 +5,7 @@ var SmashGameController = (function () {
    function SmashGameController (gameBoard, player) {
       SmashGameController._super.constructor.call(this, gameBoard);
       this.events = {};
-      this.player = new Game.Sprite({ image: player.avatar, height: 150, width: 100, x: 400, y: 500 });
+      this.player = new Game.Sprite({ image: player.avatar, height: 75, width: 68, x: 400, y: 500 });
       this.player.name = player.name;
       this.player.id = player.id;
       this.playerToEntity = {};
@@ -28,7 +28,7 @@ var SmashGameController = (function () {
       }
 
       if (Game.Keyboard.isPressed('w') && this.player.acceleration === 0) {
-         this.player.speed.y = -.7;
+         this.player.speed.y = -1.4;
          this.player.acceleration = .005;
          change = true;
       }
@@ -66,8 +66,8 @@ var SmashGameController = (function () {
       for (id in this.data.players) {
          if (!this.playerToEntity[id]) {
             var player = this.data.players[id];
-            player.height = 150;
-            player.width = 100;
+            player.height = 75;
+            player.width = 68;
             player.x = 400;
             player.y = 400;
             var sprite = new Game.Sprite(player);

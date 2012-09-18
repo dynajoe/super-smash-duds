@@ -62,15 +62,11 @@ Game.Sprite = (function () {
       this.image = new Image();
       this.xoffset = config.xoffset || 0;
       this.yoffset = config.yoffset || 0;
-
       this.image.src = config.image;
-      this.generator = config.generator;
 
       var _that = this;
 
       this.image.onload = function () {
-         _that.image_width = this.width;
-         _that.image_height = this.height;
          _that.loaded = true;
       }
    }
@@ -86,16 +82,13 @@ Game.Sprite = (function () {
       this.y = this.y + (this.speed.y * elapsed);
 
       Sprite._super.update.call(this, elapsed);
-
-      if (this.generator) {
-         this.generator(elapsed);
-      }
    }
 
    Sprite.prototype.render = function (context) {
       if (!this.loaded) {
          return;
       }
+      
       context.drawImage(
          this.image, 
          this.xoffset, this.yoffset,
