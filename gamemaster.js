@@ -11,7 +11,7 @@ GameMaster.prototype.playerEntered = function (socket) {
    socket.on('avatar-selected', function (avatar) {
       socket.playing = true;
       socket.avatar = avatar;
-      _this.players[socket.id] = { acceleration: 0, image: avatar.avatar, name: avatar.name, x: 400, y: 300, direction: 0, speed: 0 };
+      _this.players[socket.id] = { acceleration: 0, image: avatar.avatar, name: avatar.name, x: 400, y: 300, speed: {x: 0, y: 0 } };
    });
 }
 
@@ -34,14 +34,15 @@ GameMaster.prototype.update = function (time) {
       return;
    }
 
+   var elapsed = time.elapsed;
+
    for (id in this.players) {
       var p = this.players[id];
-
-      var speedx = Math.cos(p.direction * Math.PI / 180) * p.speed;
-      var speedy = Math.sin(p.direction * Math.PI / 180) * p.speed;
-      speedy = speedy + p.acceleration * time.elapsed;
-      p.x = p.x + (speedx * time.elapsed);
-      p.y = p.y + (speedy * time.elapsed);
+      
+      p.speed.y = p.speed.y + p.acceleration * elapsed;
+      
+      p.x = p.x + (p.speed.x * elapsed);
+      p.y = p.y + (p.speed.y * elapsed);
 
       if (p.x > this.world.width) { 
          p.x = this.world.width;
@@ -50,12 +51,13 @@ GameMaster.prototype.update = function (time) {
       }
 
       if (p.y > this.world.height - 150) {
-         p.y = this.world.height  - 150;
+         p.y = this.world.height - 150;
          p.acceleration = 0;
+         p.speed.y = 0;
       }
 
       if (p.y < this.world.height - 150) {
-         p.acceleration = .001;
+         p.acceleration = .005;
       }
    }
 

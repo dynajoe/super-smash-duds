@@ -28,8 +28,8 @@ var SmashGameController = (function () {
       }
 
       if (Game.Keyboard.isPressed('w') && this.player.acceleration === 0) {
-         this.player.speed.y = -.5;
-         this.player.acceleration = .001;
+         this.player.speed.y = -.7;
+         this.player.acceleration = .005;
          change = true;
       }
 
@@ -59,7 +59,7 @@ var SmashGameController = (function () {
 
       this.entities.forEach(function (e, i) {
          if (_this.data.players[e.id]) {
-           // e.set.call(e, _this.data.players[e.id]);
+            e.set.call(e, _this.data.players[e.id]);
          } else {
             _this.entities = _this.entities.splice(i - 1, 1);
             delete _this.playerToEntity[e.id];
