@@ -13,16 +13,15 @@ var SelectAvatarController = (function () {
          controller.entities.push(new Game.Sprite({ 
             image: a,
             x: controller.xoffset + i * 88, 
-            y: 100, 
+            y: 350, 
             width: 68,
             height: 75
          }));
       });
       
-      this.selector = new Game.Rectangle({ width: 68, height: 20, x: 0, y: 200, color: 'blue' });
+      this.selector = new Game.Rectangle({ width: 68, height: 20, x: 0, y: 450, color: 'blue' });
 
       this.entities.push(this.selector);
-      this.entities.push(new Game.Label({ x: 200, y: 50, text: 'Select an avatar!', color: 'black', font: 'bold 50px sans-serif' }));
       this.avatars = avatars;
       this.selection = 0;
       this.timeToNextSelection = 0;

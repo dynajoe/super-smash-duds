@@ -2,6 +2,7 @@ var GameMaster = function () {
    this.players = {};
    this.world = { width: 900, height: 600 };
    this.playerHeight = 75;
+   this.playerWidth = 68;
 }
 
 var avatars = ['red.png', 'green.png', 'black.png', 'purple.png'];
@@ -45,8 +46,8 @@ GameMaster.prototype.update = function (time) {
       p.x = p.x + (p.speed.x * elapsed);
       p.y = p.y + (p.speed.y * elapsed);
 
-      if (p.x > this.world.width) { 
-         p.x = this.world.width;
+      if (p.x > this.world.width - this.playerWidth) { 
+         p.x = this.world.width - this.playerWidth;
       } else if (p.x < 0) {
          p.x = 0;
       }
