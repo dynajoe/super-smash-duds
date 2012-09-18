@@ -37,7 +37,15 @@ var SmashGameController = (function () {
          this.emit('update', { id: this.player.id, acceleration: this.player.acceleration, speed: this.player.speed });
       }
    }
-      
+   
+   SmashGameController.prototype.setWorld = function (world) {
+      var _this = this;
+
+      world.forEach(function(w) {
+         _this.entities.unshift(new Game.Rectangle(w));
+      });
+   }
+
    SmashGameController.prototype.update = function (time) {
 
       SmashGameController._super.update.call(this, time);
@@ -57,7 +65,7 @@ var SmashGameController = (function () {
       this.entities.forEach(function (e, i) {
          if (_this.data.players[e.id]) {
             e.set.call(e, _this.data.players[e.id]);
-         } else {
+         } else if (e.id) {
             _this.entities = _this.entities.splice(i - 1, 1);
             delete _this.playerToEntity[e.id];
          }

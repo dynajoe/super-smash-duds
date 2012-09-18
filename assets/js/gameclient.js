@@ -10,14 +10,19 @@
          avatar = a;
       });
    });
+   
+   socket.on('world', function (data) {
+      GameLoop.controller = new SmashGameController(document.getElementById('game-board'), { name: avatar.name, avatar: avatar.avatar, id: socket.socket.sessionid });
+      GameLoop.controller.setWorld(data);
+   });
 
    socket.on('update', function (data) {
 
       if (!isPlaying) {
-         GameLoop.controller = new SmashGameController(document.getElementById('game-board'), { name: avatar.name, avatar: avatar.avatar, id: socket.socket.sessionid });
          GameLoop.controller.on('update', function (player) {
             socket.emit('update', player);
          });
+
          isPlaying = true;
       }
 

@@ -7,24 +7,24 @@ var gameServer = function (io) {
 
    io.sockets.on('connection', function (socket) {
      
-     gameMaster.playerEntered(socket);
+      gameMaster.playerEntered(socket);
 
-     clients[socket.id] = socket;
+      clients[socket.id] = socket;
      
       socket.on('update', function (player) {
          gameMaster.updatePlayer(player);
       });
 
-     socket.on('disconnect', function () {
-       delete clients[socket.id];
-       gameMaster.playerLeft(socket.id);
-     });
+      socket.on('disconnect', function () {
+         delete clients[socket.id];
+         gameMaster.playerLeft(socket.id);
+      });
    });
 
-  var scheduleFrame = function (callback) {
-    setTimeout(function () { callback(new Date().getTime()); }, 1000 / 20);
-  }
-  
+   var scheduleFrame = function (callback) {
+      setTimeout(function () { callback(new Date().getTime()); }, 1000 / 20);
+   }
+
   var loop = {};
 
   (function gameLoop (now) {
