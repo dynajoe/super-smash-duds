@@ -39,13 +39,10 @@ var SmashGameController = (function () {
    }
       
    SmashGameController.prototype.update = function (time) {
+
       SmashGameController._super.update.call(this, time);
 
       this.processInput();
-
-      if (this.data === this.lastData) {
-         return;
-      }
 
       //Make sure to stay on the world vertically      
       //If we hit the ground we are no longer accelerating.
