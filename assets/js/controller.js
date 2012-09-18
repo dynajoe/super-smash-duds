@@ -4,6 +4,9 @@ Game.Controller = function () { }
 
 Game.Controller.prototype.constructor = function (gameboard) {
    this.gameboard = gameboard;
+   this.world = {};
+   this.world.width = gameboard.width;
+   this.world.height = gameboard.height;
    this.context = gameboard.getContext("2d");
    this.entities = [];
 };

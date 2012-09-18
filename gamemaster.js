@@ -1,8 +1,7 @@
 var GameMaster = function () {
    this.players = {};
+   this.world = { width: 900, height: 600 };
 }
-
-GameMaster.prototype = new process.EventEmitter();
 
 var avatars = ['dk.gif', 'princess.png'];
 
@@ -44,19 +43,19 @@ GameMaster.prototype.update = function (time) {
       p.x = p.x + (speedx * time.elapsed);
       p.y = p.y + (speedy * time.elapsed);
 
-      if (p.x > 700) { 
-         p.x = 700;
+      if (p.x > this.world.width) { 
+         p.x = this.world.width;
       } else if (p.x < 0) {
          p.x = 0;
       }
 
-      if (p.y > 600) {
-         p.y = 600;
+      if (p.y > this.world.height - 150) {
+         p.y = this.world.height  - 150;
          p.acceleration = 0;
       }
 
-      if (p.y < 600) {
-         p.acceleration = .02;
+      if (p.y < this.world.height - 150) {
+         p.acceleration = .001;
       }
    }
 

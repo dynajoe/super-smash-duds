@@ -20,7 +20,7 @@ Game.Label = (function () {
       Label._super.constructor.apply(this, arguments);
       this.text = config.text;
       this.color = config.color || 'black'
-      this.font = config.conf ||  "bold 36px sans-serif";
+      this.font = config.font ||  "bold 12px sans-serif";
    }
 
    Label.prototype.render = function (context) {
@@ -56,9 +56,8 @@ Game.Sprite = (function () {
    function Sprite (config) {
       Sprite._super.constructor.apply(this, arguments);
       
-      this.speed = config.speed || 0;
+      this.speed = config.speed || {x: 0, y: 0};
       this.acceleration = config.acceleration || 0;
-      this.direction = config.direction || 0;
       this.zindex = config.zindex || this.zindex;
       this.image = new Image();
       this.xoffset = config.xoffset || 0;
@@ -81,14 +80,11 @@ Game.Sprite = (function () {
          return;
       }
 
-      var speedx = Math.cos(this.direction * Math.PI / 180) * this.speed;
-      var speedy = Math.sin(this.direction * Math.PI / 180) * this.speed;
+      this.speed.y = this.speed.y + this.acceleration * elapsed;
+      
+      this.x = this.x + (this.speed.x * elapsed);
+      this.y = this.y + (this.speed.y * elapsed);
 
-      speedy = speedy + this.acceleration * elapsed;
-
-      this.x = this.x + (speedx * elapsed);
-      this.y = this.y + (speedy * elapsed);
-   
       Sprite._super.update.call(this, elapsed);
 
       if (this.generator) {

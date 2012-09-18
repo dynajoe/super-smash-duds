@@ -3,22 +3,26 @@ var SelectAvatarController = (function () {
    Extends(SelectAvatarController, Game.Controller);
    
    function SelectAvatarController (gameBoard, avatars, onSelection) {
-      SelectAvatarController._super.constructor.apply(this, arguments);
+      SelectAvatarController._super.constructor.call(this, gameBoard);
       this.onSelection = onSelection;
       var controller = this;
+      
+      this.xoffset = (this.world.width - (avatars.length * 120)) / 2;
+
       avatars.forEach(function (a, i) {
          controller.entities.push(new Game.Sprite({ 
             image: a,
-            x: (i + 1) * 150 + (i + 1) * 10, 
+            x: controller.xoffset + i * 120, 
             y: 100, 
             width: 100,
             height: 150
          }));
       });
       
-      this.selector = new Game.Rectangle({ width: 100, height: 20, x: 0, y: 120, color: 'blue' });
+      this.selector = new Game.Rectangle({ width: 100, height: 20, x: 0, y: 250, color: 'blue' });
+
       this.entities.push(this.selector);
-      this.entities.push(new Game.Label({ x: 100, y: 50, text: 'Select an avatar!', color: 'black' }));
+      this.entities.push(new Game.Label({ x: 200, y: 50, text: 'Select an avatar!', color: 'black', font: 'bold 50px sans-serif' }));
       this.avatars = avatars;
       this.selection = 0;
    }
@@ -49,7 +53,7 @@ var SelectAvatarController = (function () {
          this.selection = 0;
       }
 
-      this.selector.x = (this.selection + 1) * 150 + (this.selection + 1) * 10;
+      this.selector.x = this.xoffset + (this.selection ) * 120;
    };
 
    return SelectAvatarController;

@@ -3,7 +3,7 @@ var SmashGameController = (function () {
    Extends(SmashGameController, Game.Controller);
    
    function SmashGameController (gameBoard, player) {
-      SmashGameController._super.constructor.apply(this, arguments);
+      SmashGameController._super.constructor.call(this, gameBoard);
       this.events = {};
       this.player = new Game.Sprite({ image: player.avatar, height: 150, width: 100, x: 400, y: 500 });
       this.player.name = player.name;
@@ -17,25 +17,24 @@ var SmashGameController = (function () {
       var change;
 
       if (Game.Keyboard.isPressed('d')) {
-         this.player.direction = 0;
-         this.player.speed = .2;
+         this.player.speed.x = .2;
          change = true;
       } else if (Game.Keyboard.isPressed('a')) {
-         this.player.direction = 180;
-         this.player.speed = .2;
+         this.player.speed.x = -.2;
          change = true;
-      } else if (Game.Keyboard.isPressed('w') && this.player.acceleration === 0) {
-         this.player.direction = 90;
-         this.player.speed = .5;
-         this.player.acceleration = -.02;
+      } else if (this.player.speed !== 0) {
+         this.player.speed.x = 0;
          change = true;
       }
-      else {
-         this.player.speed = 0;
+
+      if (Game.Keyboard.isPressed('w') && this.player.acceleration === 0) {
+         this.player.speed.y = -.5;
+         this.player.acceleration = .001;
          change = true;
       }
+
       if (change) {
-         this.emit('update', { id: this.player.id, acceleration: this.player.acceleration, direction: this.player.direction, speed: this.player.speed });
+         this.emit('update', { id: this.player.id, acceleration: this.player.acceleration, speed: this.player.speed });
       }
    }
       
@@ -47,12 +46,20 @@ var SmashGameController = (function () {
       if (this.data === this.lastData) {
          return;
       }
-      
+
+      //Make sure to stay on the world vertically      
+      //If we hit the ground we are no longer accelerating.
+      if ((this.player.y + this.player.height) > this.world.height) {
+         this.player.y = this.world.height - this.player.height;
+         this.player.acceleration = 0;
+         this.player.speed.y = 0;
+      }      
+
       var _this = this;
 
       this.entities.forEach(function (e, i) {
          if (_this.data.players[e.id]) {
-            e.set.call(e, _this.data.players[e.id]);
+           // e.set.call(e, _this.data.players[e.id]);
          } else {
             _this.entities = _this.entities.splice(i - 1, 1);
             delete _this.playerToEntity[e.id];
