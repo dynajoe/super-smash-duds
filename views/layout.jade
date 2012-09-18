@@ -1,0 +1,27 @@
+doctype 5
+html
+   head
+      link(rel="shortcut icon", href="/favicon.ico")
+
+      title
+         block title
+            | express-starter
+
+      block styles
+         != css("reset")
+         != css("skin")
+
+      block scripts
+         script(type="text/javascript",src="/socket.io/socket.io.js")
+         != js("keyboard")
+         != js("sound")
+         != js("utility")
+         != js("entities")
+         != js("controller")
+         != js("controllers/select-avatar-controller")
+         != js("controllers/smash-game-controller")
+         != js("index")
+         != js("gameclient")
+   
+   body
+      block body
