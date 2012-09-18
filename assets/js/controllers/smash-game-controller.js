@@ -11,6 +11,7 @@ var SmashGameController = (function () {
       this.playerToEntity = {};
       this.playerToEntity[player.id] = this.player;
       this.entities.push(this.player);
+      this.audioController = new Game.AudioController();
    }
    
    SmashGameController.prototype.processInput = function () {
@@ -28,6 +29,7 @@ var SmashGameController = (function () {
       }
 
       if (Game.Keyboard.isPressed('w') && this.player.acceleration === 0) {
+         this.audioController.play('/jump.ogg');
          this.player.speed.y = -1.4;
          this.player.acceleration = .005;
          change = true;
