@@ -16,22 +16,26 @@ var SmashGameController = (function () {
    SmashGameController.prototype.processInput = function () {
       var change;
 
-      if (Game.Keyboard.isPressed('left')) {
-         this.player.direction = 180;
-         this.player.speed = .2;
-         change = true;
-      } else if (Game.Keyboard.isPressed('right')) {
+      if (Game.Keyboard.isPressed('d')) {
          this.player.direction = 0;
          this.player.speed = .2;
          change = true;
-      } else if (Game.Keyboard.isPressed('space') && this.player.accelleration === 0) {
+      } else if (Game.Keyboard.isPressed('a')) {
+         this.player.direction = 180;
+         this.player.speed = .2;
+         change = true;
+      } else if (Game.Keyboard.isPressed('w') && this.player.acceleration === 0) {
          this.player.direction = 90;
          this.player.speed = .5;
+         this.player.acceleration = -.02;
          change = true;
       }
-
+      else {
+         this.player.speed = 0;
+         change = true;
+      }
       if (change) {
-         this.emit('update', { id: this.player.id, direction: this.player.direction, speed: this.player.speed });
+         this.emit('update', { id: this.player.id, acceleration: this.player.acceleration, direction: this.player.direction, speed: this.player.speed });
       }
    }
       
@@ -50,7 +54,7 @@ var SmashGameController = (function () {
          if (_this.data.players[e.id]) {
             e.set.call(e, _this.data.players[e.id]);
          } else {
-            _this.entities = _this.entities.splice(i, 1);
+            _this.entities = _this.entities.splice(i - 1, 1);
             delete _this.playerToEntity[e.id];
          }
       });
@@ -65,7 +69,7 @@ var SmashGameController = (function () {
             var sprite = new Game.Sprite(player);
             sprite.id = id;
             this.entities.push(sprite);
-            this.playerToEntity[player.id] = sprite;
+            this.playerToEntity[id] = sprite;
          }
       }
 

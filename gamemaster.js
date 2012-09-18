@@ -12,7 +12,7 @@ GameMaster.prototype.playerEntered = function (socket) {
    socket.on('avatar-selected', function (avatar) {
       socket.playing = true;
       socket.avatar = avatar;
-      _this.players[socket.id] = { image: avatar.avatar, name: avatar.name, x: 400, y: 300, direction: 0, speed: 0 };
+      _this.players[socket.id] = { acceleration: 0, image: avatar.avatar, name: avatar.name, x: 400, y: 300, direction: 0, speed: 0 };
    });
 }
 
@@ -26,6 +26,7 @@ GameMaster.prototype.updatePlayer = function (player) {
    if (p) {
       p.direction = player.direction;
       p.speed = player.speed;
+      p.acceleration = player.acceleration;
    }
 };
 
@@ -39,7 +40,7 @@ GameMaster.prototype.update = function (time) {
 
       var speedx = Math.cos(p.direction * Math.PI / 180) * p.speed;
       var speedy = Math.sin(p.direction * Math.PI / 180) * p.speed;
-
+      speedy = speedy + p.acceleration * time.elapsed;
       p.x = p.x + (speedx * time.elapsed);
       p.y = p.y + (speedy * time.elapsed);
 
@@ -51,10 +52,11 @@ GameMaster.prototype.update = function (time) {
 
       if (p.y > 600) {
          p.y = 600;
+         p.acceleration = 0;
       }
 
       if (p.y < 600) {
-         p.acceleration = -9.8;
+         p.acceleration = .02;
       }
    }
 

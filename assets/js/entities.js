@@ -57,6 +57,7 @@ Game.Sprite = (function () {
       Sprite._super.constructor.apply(this, arguments);
       
       this.speed = config.speed || 0;
+      this.acceleration = config.acceleration || 0;
       this.direction = config.direction || 0;
       this.zindex = config.zindex || this.zindex;
       this.image = new Image();
@@ -83,6 +84,8 @@ Game.Sprite = (function () {
       var speedx = Math.cos(this.direction * Math.PI / 180) * this.speed;
       var speedy = Math.sin(this.direction * Math.PI / 180) * this.speed;
 
+      speedy = speedy + this.acceleration * elapsed;
+
       this.x = this.x + (speedx * elapsed);
       this.y = this.y + (speedy * elapsed);
    
@@ -108,7 +111,7 @@ Game.Sprite = (function () {
    Sprite.prototype.set = function (config) {
       this.speed = config.speed;
       this.direction = config.direction;
-      this.accelleration = config.accelleration;
+      this.acceleration = config.acceleration;
       this.x = config.x;
       this.y = config.y; 
    }
